@@ -1,4 +1,5 @@
-import { v2 as cloudinary } from "cloudinary";
+import { UploadApiResponse, v2 as cloudinary } from "cloudinary";
+import streamifier from "streamifier";
 
 class ImageService {
   constructor() {
@@ -9,19 +10,18 @@ class ImageService {
     });
   }
 
-  async uploadImage(file: string) {
-    try {
-      const option = {
-        useFilename: true,
-        uniqueFilename: false,
-        ovewrite: true,
-      };
-      const uploadImage = await cloudinary.uploader.upload(file, option);
-      console.log(uploadImage);
-      return uploadImage;
-    } catch (error) {
-      console.log(error);
-    }
+  async uploadImage(file: Express.Multer.File) {
+    return new Promise<UploadApiResponse>((resolve, reject) => {
+      let stream = cloudinary.uploader.upload_stream((error, result) => {
+        if (result) {
+          resolve(result);
+        } else {
+          reject(error);
+        }
+      });
+
+      streamifier.createReadStream(file.buffer).pipe(stream);
+    });
   }
 }
 
