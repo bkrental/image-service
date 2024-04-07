@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "local": "set NODE_ENV=local&& nodemon src/index.ts",
+    "start": "set NODE_ENV=prod&& nodemon src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
