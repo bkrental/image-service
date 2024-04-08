@@ -1,6 +1,5 @@
 import { UploadApiResponse, v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
-import internal from "stream";
 
 class ImageService {
   constructor() {
