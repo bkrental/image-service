@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import ImageService from "../services/ImageService";
+import { v2 as cloudinary } from "cloudinary";
 
 const ImageController = {
   uploadImage: async (req: Request, res: Response) => {
@@ -8,10 +9,14 @@ const ImageController = {
     }
 
     const imageService = new ImageService();
-    const uploadImage = await imageService.uploadImage(req.file);
+    const uploadedImage = await imageService.uploadImage(req.file);
 
     return res.json({
-      url: uploadImage.url,
+      url: cloudinary.url(uploadedImage.public_id, {
+        height: 600,
+        width: 900,
+        crop: "fill",
+      }),
     });
   },
 
