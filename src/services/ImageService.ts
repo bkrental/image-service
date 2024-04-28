@@ -12,22 +12,13 @@ class ImageService {
 
   async uploadImage(file: Express.Multer.File) {
     return new Promise<UploadApiResponse>((resolve, reject) => {
-      const eagerOptions = {
-        width: 400,
-        height: 200,
-        crop: "pad",
-      };
-
-      let stream = cloudinary.uploader.upload_stream(
-        eagerOptions,
-        (error, result) => {
-          if (result) {
-            resolve(result);
-          } else {
-            reject(error);
-          }
+      let stream = cloudinary.uploader.upload_stream((error, result) => {
+        if (result) {
+          resolve(result);
+        } else {
+          reject(error);
         }
-      );
+      });
 
       streamifier.createReadStream(file.buffer).pipe(stream);
     });
