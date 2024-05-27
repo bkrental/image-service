@@ -1,11 +1,20 @@
 import express from "express";
 import imageRoute from "./routes/imageRoute";
 import dotenvFlow from "dotenv-flow";
+import cors from "cors";
 
 const app = express();
 dotenvFlow.config();
 
 app.use(express.json());
+app.use(
+  cors({
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+  })
+);
 
 app.use("/api/", imageRoute);
 
